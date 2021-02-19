@@ -3,6 +3,7 @@ package handlers
 import (
 	"books/models"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -18,13 +19,8 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 	}
 	id := models.InsertBook(b)
 
-	response := struct {
-		ID    int
-		Title string
-		Price float32
-	}{
-		id, b.Title, b.Price,
-	}
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(response)
+
+	response := []byte(fmt.Sprintf(`{"bookId":%d, "title":%q, "price":%f}`, id, b.Title, b.Price))
+	w.Write(response)
 }

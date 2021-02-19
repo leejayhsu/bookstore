@@ -46,31 +46,3 @@ func GetBook(id int) Book {
 	b := Book{title, price}
 	return b
 }
-
-// AllBooks returns a slice of all books in the books table.
-func AllBooks() ([]Book, error) {
-	// Note that we are calling Query() on the global variable.
-	rows, err := DB.Query("SELECT * FROM books")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var bks []Book
-
-	for rows.Next() {
-		var bk Book
-
-		err := rows.Scan(&bk.Title, &bk.Price)
-		if err != nil {
-			return nil, err
-		}
-
-		bks = append(bks, bk)
-	}
-	if err = rows.Err(); err != nil {
-		return nil, err
-	}
-
-	return bks, nil
-}

@@ -28,7 +28,7 @@ func main() {
 	defer models.DB.Close()
 
 	// Create the "books" table.
-	if _, err := models.DB.Exec("CREATE TABLE IF NOT EXISTS books (id SERIAL PRIMARY KEY, title varchar(255), price numeric(20,2))"); err != nil {
+	if _, err := models.DB.Exec(dbinit); err != nil {
 		log.Fatal(err)
 	}
 
@@ -43,3 +43,12 @@ func main() {
 
 	log.Fatal(http.ListenAndServe("localhost:5000", r))
 }
+
+var dbinit string = `
+CREATE TABLE IF NOT EXISTS
+books (
+	id SERIAL PRIMARY KEY,
+	title varchar(255),
+	price numeric(20,2)
+)
+`

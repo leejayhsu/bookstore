@@ -21,6 +21,6 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 
-	response := []byte(fmt.Sprintf(`{"bookId":%d, "title":%q, "price":%f}`, id, b.Title, b.Price))
+	response := []byte(fmt.Sprintf(`{"bookId":%d, "title":%q, "price":%.2f}`, id, b.Title, b.Price))
 	w.Write(response)
 }

@@ -10,12 +10,13 @@ var DB *sql.DB
 
 // Book is a model of a book
 type Book struct {
+	ID    int
 	Title string
 	Price float32
 }
 
 // InsertBook inserts a book
-func InsertBook(b Book) int {
+func InsertBook(b Book) Book {
 	sqlStatement := `
 INSERT INTO books (title, price)
 VALUES ($1, $2)
@@ -25,7 +26,8 @@ RETURNING id`
 	if err != nil {
 		panic(err)
 	}
-	return id
+	b.ID = id
+	return b
 }
 
 // GetBook retrieves a single book
@@ -43,6 +45,18 @@ func GetBook(id int) Book {
 		panic(err)
 	}
 
-	b := Book{title, price}
+	b := Book{id, title, price}
 	return b
+}
+
+// UpdateBook updates a book
+func UpdateBook(b Book) {
+	sqlStatement := `
+UPDATE books
+SET title = $2, price = $3
+WHERE id = $1;`
+	_, err := DB.Exec(sqlStatement, b.ID, b.Title, b.Price)
+	if err != nil {
+		panic(err)
+	}
 }

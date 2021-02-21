@@ -11,9 +11,11 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var b models.Book
-	err := json.NewDecoder(r.Body).Decode(&b)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+	d := json.NewDecoder(r.Body)
+	if err := d.Decode(&b); err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(`{"error": "bad request"}`))
 		return
 	}
 	book := models.InsertBook(b)

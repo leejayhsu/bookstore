@@ -38,6 +38,7 @@ func main() {
 	v1.HandleFunc("/books/{book_id}", handlers.GetBook).Methods(http.MethodGet)
 	v1.HandleFunc("/books", handlers.CreateBook).Methods(http.MethodPost)
 	v1.HandleFunc("/books/{book_id}", handlers.UpdateBook).Methods(http.MethodPut)
+	v1.HandleFunc("/books/{book_id}", handlers.PatchBook).Methods(http.MethodPatch)
 	v1.HandleFunc("/books/{book_id}", handlers.DeleteBook).Methods(http.MethodDelete)
 	v1.HandleFunc("/", handlers.HomeLink)
 
